@@ -27,10 +27,10 @@ SECRET_KEY = os.environ.get('DJANG0_SECRET_KEY', 'django-insecure-a%yt(h)lv6271j
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = False
-# DEBUG = True
+
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -143,4 +143,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # The URL to use when referring to static files (where they will be served from)
-STATIC_URL = '/static/'
+STATIC_URL = 'static/'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
