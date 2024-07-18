@@ -1,4 +1,4 @@
-import dj-database-url
+import dj_database_url
 
 """
 Django settings for local_library project.
