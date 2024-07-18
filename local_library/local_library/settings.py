@@ -1,3 +1,5 @@
+import dj-database-url
+
 """
 Django settings for local_library project.
 
@@ -9,10 +11,12 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 from dotenv import load_dotenv
 from pathlib import Path
 
 import os
+
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -79,17 +83,14 @@ WSGI_APPLICATION = 'local_library.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
+# Update database configuration from $DATABASE_URL environment variable (if defined)
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('NAME'),
-        'USER': os.getenv('USER'),
-        'PASSWORD': os.getenv('PASSWORD'),
-        'HOST': os.getenv('HOST'),
-        'PORT': os.getenv('PORT')
-    }
+    'default': dj_database_url.config(
+        default='postgresql://postgres:postgres@localhost:5432/local_library',
+        conn_max_age=600
+    )
 }
 
 
@@ -145,3 +146,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # The URL to use when referring to static files (where they will be served from)
 STATIC_URL = 'static/'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(
+        conn_max_age=500,
+        conn_health_checks=True,
+    )
