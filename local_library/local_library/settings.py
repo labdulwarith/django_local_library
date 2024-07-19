@@ -85,15 +85,6 @@ WSGI_APPLICATION = 'local_library.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # Update database configuration from $DATABASE_URL environment variable (if defined)
 
-
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgresql://postgres:postgres@localhost:5432/local_library',
-        conn_max_age=600
-    )
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
@@ -147,8 +138,21 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = 'static/'
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        conn_max_age=500,
-        conn_health_checks=True,
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT'),
+    }
+}
+
+DATABASES = {
+    'default': dj_database_url.config(
+        # Replace this value with your local database's connection string.
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600
     )
+}
