@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: local_library
+    buildCommand: "./build.sh"
+    env: python
+    startCommand: "gunicorn local_library.wsgi:application"
